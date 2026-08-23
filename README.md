@@ -13,3 +13,7 @@ Interactive Power BI dashboard for sales analysis.
 - Power BI Desktop
 - DAX
 - Power Query
+
+## Dashboard Preview
+
+![Blinkit Sales Dashboard](dashboard.png)
