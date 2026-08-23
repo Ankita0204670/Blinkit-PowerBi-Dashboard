@@ -1,0 +1,151 @@
+table Blinkit_Dataset
+	lineageTag: b3fb3b86-84d9-4a44-b8d1-23b6edbf2da3
+
+	measure 'Total Sales' = SUM(Blinkit_Dataset[Sales])
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
+		lineageTag: 5009402f-d26b-459b-ac57-8e2e970e4869
+
+	measure 'No of Items' = COUNTROWS('Blinkit_Dataset')
+		formatString: 0
+		lineageTag: 83f159c5-1db1-457c-9f38-6c24fe277268
+
+	measure 'Avg Sales' = AVERAGE(Blinkit_Dataset[Sales])
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 90db7598-d74a-44c9-ba1f-3af61a3e7e46
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Avg Rating' = AVERAGE(Blinkit_Dataset[Rating])
+		formatString: 0
+		lineageTag: 2e725a69-5804-495b-a157-82465f51cc42
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column Item_ID
+		dataType: string
+		lineageTag: 26ffd4e9-3f78-49b1-9b8c-f493954cfd6a
+		summarizeBy: none
+		sourceColumn: Item_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Item_Weight
+		dataType: double
+		lineageTag: 6eb8829f-fbfa-4998-a504-55c036768f2e
+		summarizeBy: sum
+		sourceColumn: Item_Weight
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Item_Fat_Content
+		dataType: string
+		lineageTag: 40f0ebee-4c69-4f8b-aefc-9b0eeb97f51c
+		summarizeBy: none
+		sourceColumn: Item_Fat_Content
+
+		annotation SummarizationSetBy = Automatic
+
+	column Item_Visibility
+		dataType: double
+		lineageTag: cf5039cf-5542-4147-8029-cf31f0b1865b
+		summarizeBy: sum
+		sourceColumn: Item_Visibility
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Item_Type
+		dataType: string
+		lineageTag: 435e6b9b-c716-4cdc-b691-782e974b7ead
+		summarizeBy: none
+		sourceColumn: Item_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Item_MRP
+		dataType: double
+		lineageTag: e97ea9de-2fa0-4db6-ae0b-ab5df7a911a3
+		summarizeBy: sum
+		sourceColumn: Item_MRP
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Outlet_ID
+		dataType: string
+		lineageTag: 983693a0-3f91-4f32-94ac-6f9e5f150bfa
+		summarizeBy: none
+		sourceColumn: Outlet_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Outlet_Year
+		dataType: double
+		lineageTag: 83410f32-1a4f-4b99-9c89-80dc38a1076f
+		summarizeBy: sum
+		sourceColumn: Outlet_Year
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Outlet_Size
+		dataType: string
+		lineageTag: a2d9338b-2af4-46fe-8598-91de3a43151b
+		summarizeBy: none
+		sourceColumn: Outlet_Size
+
+		annotation SummarizationSetBy = Automatic
+
+	column Outlet_Location_Type
+		dataType: string
+		lineageTag: 473af68c-46a0-4436-bde2-039e9ca40f22
+		summarizeBy: none
+		sourceColumn: Outlet_Location_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Outlet_Type
+		dataType: string
+		lineageTag: 352b4d09-744b-4522-9c6e-41aa2e82dbcb
+		summarizeBy: none
+		sourceColumn: Outlet_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sales
+		dataType: double
+		lineageTag: 3998fef9-8498-4be5-a5be-fcf986e26582
+		summarizeBy: sum
+		sourceColumn: Sales
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Rating
+		dataType: double
+		lineageTag: 0c4a501e-98b2-4c20-9c73-df81010390ee
+		summarizeBy: sum
+		sourceColumn: Rating
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Blinkit_Dataset = m
+		mode: import
+		source =
+				let
+				    Source = Odbc.DataSource("dsn=BlinkitSQLite", [HierarchicalNavigation=true]),
+				    Blinkit_Dataset_Table = Source{[Name="Blinkit_Dataset",Kind="Table"]}[Data],
+				    #"Renamed Columns" = Table.RenameColumns(Blinkit_Dataset_Table,{{"Item_Outlet_Sales", "Sales"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_ResultType = Table
+
